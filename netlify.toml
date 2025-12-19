@@ -11,7 +11,7 @@
   status = 200
 
 [functions]
-  directory = ".next/server/app/api"
+  directory = ".next/server/pages/api"
 
 [[headers]]
   for = "/*"

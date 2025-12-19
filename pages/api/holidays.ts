@@ -1,15 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // Calendarific API configuration
 const CALENDARIFIC_API_KEY = process.env.CALENDARIFIC_API_KEY || 'your-api-key-here';
 const CALENDARIFIC_BASE_URL = 'https://calendarific.com/api/v2/holidays';
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const year = searchParams.get('year');
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-  if (!year) {
-    return NextResponse.json({ error: 'Year parameter is required' }, { status: 400 });
+  const { year } = req.query;
+
+  if (!year || typeof year !== 'string') {
+    return res.status(400).json({ error: 'Year parameter is required' });
   }
 
   try {
@@ -34,12 +37,9 @@ export async function GET(request: NextRequest) {
       isOfficial: true,
     }));
 
-    return NextResponse.json({ holidays });
+    return res.status(200).json({ holidays });
   } catch (error) {
     console.error('Error fetching holidays:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch holidays' },
-      { status: 500 }
-    );
+    return res.status(500).json({ error: 'Failed to fetch holidays' });
   }
 }
