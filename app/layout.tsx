@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Student Planner",
+  title: "Plannerly",
   description: "A comprehensive planning tool for students to manage tasks, assignments, and holidays",
 };
 
